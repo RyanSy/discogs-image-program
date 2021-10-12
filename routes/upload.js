@@ -17,10 +17,10 @@ const fs = require('fs');
 
 router.post('/', upload.single('spreadsheet'), async function(req, res) {
   if (process.env.ENVIRONMENT === 'production') {
-    var spreadsheetFilePath = path.join(__dirname, 'tmp', req.file.originalname);
+    var spreadsheetFilePath = path.join(__dirname, 'temporary', req.file.originalname);
   }
   if (process.env.ENVIRONMENT === 'development') {
-    var spreadsheetFilePath = `./tmp/${req.file.originalname}`
+    var spreadsheetFilePath = `./temporary/${req.file.originalname}`
   }
   // upload and read Excel spreadsheet
   function uploadExcelSpreadsheet() {
