@@ -1,0 +1,23 @@
+<table class="table table-striped table-bordered table-responsive">
+  <tr>
+    <th>ID</th>
+    <th>ARTIST</th>
+    <th>TITLE</th>
+    <th>EDITION</th>
+    <th>IMAGE</th>
+  </tr>
+  {{#each releaseArray}}
+  <tr>
+    <td>{{this.id}}</td>
+    <td>{{this.artist}}</td>
+    <td>{{this.title}}</td>
+    <td>{{this.edition}}</td>
+    {{#if this.cover_image}}
+      <td><a href="{{this.cover_image}}" target="_blank">{{this.cover_image}}</a></td>
+    {{else}}
+      <td>Image URL not found</td>
+    {{/if}}
+  </tr>
+  {{/each}}
+</table>
+<p><a href="/">Return to main page</a></p>
