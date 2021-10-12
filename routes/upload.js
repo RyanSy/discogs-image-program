@@ -95,12 +95,12 @@ router.post('/', upload.single('spreadsheet'), async function(req, res) {
     }
     // delete spreadsheet from temporary folder
     const filePath = spreadsheetFilePath;
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-    });
+    // fs.unlink(filePath, (err) => {
+    //   if (err) {
+    //     console.error(err);
+    //     return;
+    //   }
+    // });
     res.render('results', { releaseArray });
   };
 
