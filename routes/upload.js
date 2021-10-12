@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './temporary');
+    cb(null, './temp');
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -17,10 +17,10 @@ const fs = require('fs');
 
 router.post('/', upload.single('spreadsheet'), async function(req, res) {
   if (process.env.ENVIRONMENT === 'production') {
-    var spreadsheetFilePath = path.join(__dirname, 'temporary', req.file.originalname);
+    var spreadsheetFilePath = path.join(__dirname, 'temp/', req.file.originalname);
   }
   if (process.env.ENVIRONMENT === 'development') {
-    var spreadsheetFilePath = `./temporary/${req.file.originalname}`
+    var spreadsheetFilePath = `./temp/${req.file.originalname}`
   }
   // upload and read Excel spreadsheet
   function uploadExcelSpreadsheet() {
@@ -81,7 +81,7 @@ router.post('/', upload.single('spreadsheet'), async function(req, res) {
       return image;
     }).catch(function(error) {
         console.log(error);
-        // res.send('Error searching Discogs, please try again.')
+        res.send('Error searching Discogs, please try again.')
     });
   }
 
@@ -93,14 +93,8 @@ router.post('/', upload.single('spreadsheet'), async function(req, res) {
       var cover_image = await getImage(releaseArray[i].artist, releaseArray[i].title);
       releaseArray[i].cover_image = cover_image;
     }
-    // delete spreadsheet from temporary folder
-    const filePath = spreadsheetFilePath;
-    // fs.unlink(filePath, (err) => {
-    //   if (err) {
-    //     console.error(err);
-    //     return;
-    //   }
-    // });
+    // delete spreadsheet from public/spreadhseets folder
+    fs.unlinkSync(spreadsheetFilePath);
     res.render('results', { releaseArray });
   };
 
