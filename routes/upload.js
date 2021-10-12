@@ -12,9 +12,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 const readXlsxFile = require('read-excel-file/node');
 const axios = require('axios');
+const path = require('path');
 const fs = require('fs');
 
 router.post('/', upload.single('spreadsheet'), async function(req, res) {
+  if (process.env.ENVIRONMENT === 'production') {
+    var spreadsheetFilePath = path.join(__dirname, 'tmp', req.file.originalname);
+  }
+  if (process.env.ENVIRONMENT === 'development') {
+    var spreadsheetFilePath = `./tmp/${req.file.originalname}`
+  }
   // upload and read Excel spreadsheet
   function uploadExcelSpreadsheet() {
     // create object schema from excel spreadsheet
@@ -38,7 +45,7 @@ router.post('/', upload.single('spreadsheet'), async function(req, res) {
     };
 
     // read excel file
-    return readXlsxFile(`./tmp/${req.file.originalname}`, {schema} )
+    return readXlsxFile(spreadsheetFilePath, {schema} )
       .then((rows, errors) => {
         if (errors) {
           console.log(errors);
@@ -87,8 +94,8 @@ router.post('/', upload.single('spreadsheet'), async function(req, res) {
       releaseArray[i].cover_image = cover_image;
     }
     // delete spreadsheet from tmp
-    const path = `./tmp/${req.file.originalname}`
-    fs.unlink(path, (err) => {
+    const filePath = spreadsheetFilePath;
+    fs.unlink(filePath, (err) => {
       if (err) {
         console.error(err);
         return;
