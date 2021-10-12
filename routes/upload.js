@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './temp');
+    cb(null, './');
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -16,12 +16,8 @@ const path = require('path');
 const fs = require('fs');
 
 router.post('/', upload.single('spreadsheet'), async function(req, res) {
-  if (process.env.ENVIRONMENT === 'production') {
-    var spreadsheetFilePath = path.join(__dirname, 'temp/', req.file.originalname);
-  }
-  if (process.env.ENVIRONMENT === 'development') {
-    var spreadsheetFilePath = `./temp/${req.file.originalname}`
-  }
+  var spreadsheetFilePath = `./${req.file.originalname}`;
+
   // upload and read Excel spreadsheet
   function uploadExcelSpreadsheet() {
     // create object schema from excel spreadsheet
