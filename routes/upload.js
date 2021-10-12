@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './tmp');
+    cb(null, './temporary');
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -93,7 +93,7 @@ router.post('/', upload.single('spreadsheet'), async function(req, res) {
       var cover_image = await getImage(releaseArray[i].artist, releaseArray[i].title);
       releaseArray[i].cover_image = cover_image;
     }
-    // delete spreadsheet from tmp
+    // delete spreadsheet from temporary folder
     const filePath = spreadsheetFilePath;
     fs.unlink(filePath, (err) => {
       if (err) {
