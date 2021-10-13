@@ -83,6 +83,7 @@ router.post('/', upload.single('spreadsheet'), async function(req, res) {
 
   var releaseArray = await uploadExcelSpreadsheet();
   var releaseArrayLength = releaseArray.length;
+  var newFileName = req.file.originalname.replace('.xlsx', '-with_image_links');
 
   async function start() {
     for (var i = 0; i < releaseArrayLength; i++) {
@@ -91,7 +92,11 @@ router.post('/', upload.single('spreadsheet'), async function(req, res) {
     }
     // delete spreadsheet from public/spreadhseets folder
     fs.unlinkSync(spreadsheetFilePath);
-    res.render('results', { releaseArray });
+    res.render('results', {
+      releaseArray: releaseArray,
+      newFileName: newFileName,
+      title: newFileName
+    });
   };
 
   start();
