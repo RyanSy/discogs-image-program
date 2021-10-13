@@ -1,8 +1,20 @@
 <h1>{{title}}</h1>
+
+<p>Select an .xlsx file, then click "Upload."</p>
+
+<p>Please note: due to Discogs'   rate limiting policy, please limit Excel spreadsheet to 60 items at a time, and wait at least 1 minute between uploads.</p>
+
 <p>
-  <form class="" action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="spreadsheet">
-    <input type="submit" value="Upload">
+  <form id="uploadSpreadsheetForm" class="" action="/upload" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <input id="spreadsheetInput" class="form-control-file" type="file" name="spreadsheet">
+    </div>
+    <button id="uploadButton" class="mt-3 btn btn-primary" type="submit" form="uploadSpreadsheetForm" value="Upload">Upload</button>
   </form>
 </p>
-<p>Please note: due to Discogs rate limiting policy, please limit Excel spreadsheet to 60 items at a time, and wait at least 1 minute between uploads.</p>
+
+<p>
+  <span id="processingMessage" class="ml"></span>
+</p>
+
+<script src="javascripts/script.js"></script>
